@@ -4,20 +4,23 @@ import java.util.*;
 import java.lang.Math.*;
 
 public class DummyLoadGen {
-	int NumUsers;
-	int NumWords;
-	int MaxEventID;
+	int numUsers;
+	int numWords;
+	int numEvents;
+	int maxEventID;
 	
 	public DummyLoadGen() {
-		this.NumUsers = 50000;
-		this.NumWords = 5000;
-		this.MaxEventID = 0;
+		this.numUsers = 50000;
+		this.numWords = 5000;
+		this.numEvents = 50;
+		this.maxEventID = 0;
 	}
 	
-	public DummyLoadGen(int NumUsers , int NumWords) {
-		this.NumUsers = NumUsers;
-		this.NumWords = NumWords;
-		this.MaxEventID = 0;
+	public DummyLoadGen(int NumUsers , int NumWords , int NumEvents) {
+		this.numUsers = NumUsers;
+		this.numWords = NumWords;
+		this.numEvents = NumEvents;
+		this.maxEventID = 0;
 	}
 	
 	
@@ -36,16 +39,27 @@ public class DummyLoadGen {
 	}
 	
 	public void sendLoad() {
-		int TweetLen = randInt(3,15);
-		String[] Content = new String[TweetLen];
+		int tweetLen = randInt(3,15);
+		String[] content = new String[tweetLen];
 		
-		for(int i=0 ; i < TweetLen ; i++) {
-			Content[i] = "Word"+Integer.toString(randInt(1,NumWords));
+		for(int i=0 ; i < tweetLen ; i++) {
+			content[i] = "Word"+Integer.toString(randInt(1,numWords));
 		}
 		
-		String User = "User"+Integer.toString(randInt(1,NumWords));
-		Integer eventID = new Integer(randInt(1,MaxEventID+1));
-		MaxEventID = Math.max(eventID.intValue(),MaxEventID); 
+		String user = "User"+Integer.toString(randInt(1,numWords));
+		int eventID;
+		if(maxEventID < numEvents) {
+			eventID = randInt(1,maxEventID+1);
+			maxEventID = Math.max(eventID,maxEventID);
+		}
+		
+		else {
+			eventID = randInt(1,maxEventID);
+		}
+		int score = randInt(50,100); 
+		
+		Tweet tweet = new Tweet(eventID , content , score);
+		
 	}
 	
 	
