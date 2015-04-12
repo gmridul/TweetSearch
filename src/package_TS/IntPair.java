@@ -5,14 +5,18 @@ package package_TS;
 public class IntPair {
     int x; 
     int y; 
+    float z;
+    boolean valid;
     
     public IntPair() {
-  
+    	valid=true;
     }
     
-    public IntPair(int first, int second) {
+    public IntPair(int first, int second, float third) {
         this.x = first;
         this.y = second;
+        this.z = third;
+        this.valid = true;
     }
 
     public void setFirst(int first) {
@@ -23,6 +27,21 @@ public class IntPair {
         this.y = second;
     }
 
+    public void setScore(float third) {
+    	this.z = third;
+    }
+    
+    public void setValid(boolean b) {
+    	this.valid = b;
+    }
+    
+    public void copy(IntPair p) {
+    	this.x = p.x;
+    	this.y = p.y;
+    	this.z = p.z;
+    	this.valid = p.valid;
+    }
+    
     public int getFirst() {
         return x;
     }
@@ -30,4 +49,13 @@ public class IntPair {
     public int getSecond() {
         return y;
     }
+    
+    public float getScore() {
+    	return z;
+    }
+    
+    public boolean isValid() {
+    	return valid;
+    }
 }
+
