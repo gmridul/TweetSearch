@@ -4,9 +4,13 @@ import java.util.*;
 
 public class InvertedIndex {
 	
-	Map<String, List<Integer>> IDIndex = new HashMap<String,List<Integer>>();
-	Map<Integer, List<Tweet>> threadIndex = new HashMap<Integer,List<Tweet>>();
-	int totalEvents;
+	Map<String, Heaps> IDIndex = new HashMap<String,Heaps >(); // word to Event ID
+	Map<Integer, List<Tweet>> threadIndex = new HashMap<Integer,List<Tweet>>(); //eventId to event
+	
+	public void insert(int id, int score){
+		
+	}
+	
 	
 	public void update(Tweet tweet) {
 		List<Tweet> tempTweet = threadIndex.get(tweet.EventID);
@@ -15,18 +19,16 @@ public class InvertedIndex {
 		
 		for(String st : tweet.Content) {
 			if(IDIndex.containsKey(st)) {
-				if(!IDIndex.get(st).contains(tweet.EventID)) {
-					List<Integer> tempInt = IDIndex.get(st);
-					tempInt.add(tweet.EventID);
-					Collections.sort(tempInt); // fill the parameters of sort function
+				if(IDIndex.get(st).eventBucket.get(tweet.EventID)==null) {
+					IDIndex.get(st).insert(new IntPair(tweet.EventID,0,tweet.Score));
 				}
 			}
 		}
+		
+		
 	}
 	
-	public int getTotalEvents() {
-		return totalEvents;
-	}
+	
 	
 	/*put event id type, event class type in Pair template parameters
 	 * Current Assumption : event id type : Integer		event thread type : String[]
