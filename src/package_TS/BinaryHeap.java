@@ -2,7 +2,11 @@ package package_TS;
 
 import java.util.*;
 
-public class BinaryHeap {
+public class BinaryHeap implements Iterable<IntPair>  {
+	
+	boolean valid;
+	int posQuery; 
+	
 	
 	Comparator<IntPair> minCompare = new Comparator<IntPair>() {
 		//@Override
@@ -25,8 +29,14 @@ public class BinaryHeap {
 	IntPair minS,maxS;
 	
 	public BinaryHeap(){
-		
+		valid = true;
 	}
+	
+	@Override
+	public Iterator<IntPair> iterator() {
+		return maxHeap.iterator();
+	}
+	
 	public int getSize(){
 		return minHeap.size();
 	}
@@ -47,6 +57,14 @@ public class BinaryHeap {
 	
 	public IntPair getMax(){
 		return maxHeap.peek();
+	}
+	
+	public void setValid(boolean b) {
+		valid = b;
+	}
+	
+	public boolean isValid() {
+		return valid;
 	}
 	
 }

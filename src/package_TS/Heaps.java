@@ -1,7 +1,7 @@
 package package_TS;
 import java.util.*;
 
-public class Heaps {
+public class Heaps implements Iterable<BinaryHeap> {
 	Vector<BinaryHeap> heapList = new Vector<BinaryHeap>();
 	Map<Integer, Integer> eventBucket = new HashMap<Integer, Integer>();
 	//float[] sortedKeys = new float[100];
@@ -10,6 +10,12 @@ public class Heaps {
 	
 	public Heaps(){
 		heapList.add(new BinaryHeap());
+	}
+	
+
+	@Override
+	public Iterator<BinaryHeap> iterator() {
+		return heapList.iterator();
 	}
 	
 	public void insert(IntPair e){
