@@ -6,10 +6,13 @@ public class IntPair {
     int x; 
     int y; 
     float z;
+    String word;
     boolean valid;
+    boolean lastInBinaryHeap;
     
     public IntPair() {
     	valid=true;
+    	lastInBinaryHeap=false;
     }
     
     public IntPair(int first, int second, float third) {
@@ -17,6 +20,7 @@ public class IntPair {
         this.y = second;
         this.z = third;
         this.valid = true;
+        this.lastInBinaryHeap = false;
     }
 
     public void setFirst(int first) {
@@ -29,6 +33,14 @@ public class IntPair {
 
     public void setScore(float third) {
     	this.z = third;
+    }
+    
+    public void setString(String s) {
+    	word = s;
+    }
+    
+    public String getWord() {
+    	return word;
     }
     
     public void setValid(boolean b) {
@@ -56,6 +68,23 @@ public class IntPair {
     
     public boolean isValid() {
     	return valid;
+    }
+    
+    public void setLastInBinaryHeap(boolean b) {
+    	lastInBinaryHeap = b;
+    }
+    
+    public boolean isLastInBinayHeap() {
+    	return lastInBinaryHeap;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+    	if(o.getClass()!=this.getClass()) {
+    		return false;
+    	}
+    	IntPair that = (IntPair) o;
+    	return that.x==this.x;
     }
 }
 
