@@ -2,9 +2,9 @@ package package_TS;
 
 import java.util.*;
 
-public class InvertedIndex {
+public class InvertedIndex  {
 	
-	Map<String, Heaps> IDIndex = new HashMap<String,Heaps >(); // word to Event ID
+	Map<String, Heaps> IDIndex = new HashMap<String,Heaps>(); // word to Event ID
 	Map<Integer, List<Tweet>> threadIndex = new HashMap<Integer,List<Tweet>>(); //eventId to event
 	
 	public void insert(int id, int score){
@@ -13,22 +13,23 @@ public class InvertedIndex {
 	
 	
 	public void update(Tweet tweet) {
+		if (threadIndex.get(tweet.EventID)==null){
+			threadIndex.put(tweet.EventID, new LinkedList<Tweet>() );
+		}
 		List<Tweet> tempTweet = threadIndex.get(tweet.EventID);
 		tempTweet.add(tweet);
 		threadIndex.put(tweet.EventID,tempTweet);
 		
 		for(String st : tweet.Content) {
-			if(IDIndex.containsKey(st)) {
-				if(IDIndex.get(st).eventBucket.get(tweet.EventID)==null) {
-					IDIndex.get(st).insert(new IntPair(tweet.EventID,0,tweet.Score));
-				}
+			if(!IDIndex.containsKey(st)) {
+				IDIndex.put(st,new Heaps());
 			}
+			if(IDIndex.get(st).eventBucket.get(tweet.EventID)==null) {
+				IDIndex.get(st).insert(new IntPair(tweet.EventID,0,tweet.Score));
+			}
+			
 		}
-		
-		
 	}
-	
-	
 	
 	/*put event id type, event class type in Pair template parameters
 	 * Current Assumption : event id type : Integer		event thread type : String[]

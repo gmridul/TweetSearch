@@ -2,7 +2,7 @@ package package_TS;
 import java.util.*;
 
 public class Heaps implements Iterable<BinaryHeap> {
-	Vector<BinaryHeap> heapList = new Vector<BinaryHeap>();
+	List<BinaryHeap> heapList = new ArrayList<BinaryHeap>();
 	Map<Integer, Integer> eventBucket = new HashMap<Integer, Integer>();
 	//float[] sortedKeys = new float[100];
 	int lastBucket;
@@ -24,19 +24,20 @@ public class Heaps implements Iterable<BinaryHeap> {
 			lastBucket=0;
 			capLastBucket=1;
 			heapList.get(0).push(e);
-			eventBucket.put(e.x, 0);
+			
 			return;
 		}
 		int i;
 		boolean notInserted = true;
 		for (i=0;i<=lastBucket;i++){
-			if (score> heapList.get(i).getMin().z){
+			if (score > heapList.get(i).getMin().z) {
 				heapList.get(i).push(e);
 				eventBucket.put(e.x, i);
 				notInserted = false;
-				if (heapList.get(i).getSize() <= Math.pow(2, i)){
+				if (heapList.get(i).getSize() <= Math.pow(2, i)){ // modify power function
 					return;
 				}
+				else break;
 			}		
 		}
 		
@@ -55,7 +56,7 @@ public class Heaps implements Iterable<BinaryHeap> {
 			}
 		}
 		
-		IntPair prev = heapList.get(i).minS;
+		IntPair prev = heapList.get(i).getMin();
 		heapList.get(i).remove(prev);
 		i++;
 		while (i<=lastBucket){
@@ -64,7 +65,7 @@ public class Heaps implements Iterable<BinaryHeap> {
 			if (heapList.get(i).getSize() <= Math.pow(2, i)){
 				return;
 			}
-			prev = heapList.get(i).minS;
+			prev = heapList.get(i).getMin();
 			heapList.get(i).remove(prev);
 			i++;
 		}

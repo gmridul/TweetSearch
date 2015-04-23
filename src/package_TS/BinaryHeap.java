@@ -6,9 +6,10 @@ public class BinaryHeap implements Iterable<IntPair>  {
 	
 	boolean valid;
 	int posQuery; 
+	String word;
 	
 	
-	Comparator<IntPair> minCompare = new Comparator<IntPair>() {
+	Comparator<IntPair> maxCompare = new Comparator<IntPair>() {
 		//@Override
 		public int compare(IntPair elem1, IntPair elem2) {
 			if (elem1.z>elem2.z) return -1;
@@ -16,7 +17,7 @@ public class BinaryHeap implements Iterable<IntPair>  {
 		}
 	};
 	
-	Comparator<IntPair> maxCompare = new Comparator<IntPair>() {
+	Comparator<IntPair> minCompare = new Comparator<IntPair>() {
 		//@Override
 		public int compare(IntPair elem1, IntPair elem2) {
 			if (elem1.z>elem2.z) return 1;
@@ -26,10 +27,18 @@ public class BinaryHeap implements Iterable<IntPair>  {
 	
 	PriorityQueue<IntPair> minHeap = new PriorityQueue<IntPair>(minCompare);
 	PriorityQueue<IntPair> maxHeap = new PriorityQueue<IntPair>(maxCompare);
-	IntPair minS,maxS;
+	//IntPair minS,maxS;
 	
 	public BinaryHeap(){
 		valid = true;
+	}
+	
+	public void setWord(String s) {
+		word = s;
+	}
+	
+	public String getWord() {
+		return word;
 	}
 	
 	@Override
