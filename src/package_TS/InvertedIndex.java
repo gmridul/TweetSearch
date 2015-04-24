@@ -22,7 +22,7 @@ public class InvertedIndex  {
 		
 		for(String st : tweet.Content) {
 			if(!IDIndex.containsKey(st)) {
-				IDIndex.put(st,new Heaps());
+				IDIndex.put(st,new Heaps(IDIndex.size()+1));
 			}
 			if(IDIndex.get(st).eventBucket.get(tweet.EventID)==null) {
 				IDIndex.get(st).insert(new IntPair(tweet.EventID,0,tweet.Score));

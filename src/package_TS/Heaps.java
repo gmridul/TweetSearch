@@ -8,7 +8,9 @@ public class Heaps implements Iterable<BinaryHeap> {
 	int lastBucket;
 	int capLastBucket;
 	
-	public Heaps(){
+	public Heaps(int k){
+		heapList.add(new BinaryHeap());
+		heapList.get(0).push(new IntPair(-k,0,-1));
 		heapList.add(new BinaryHeap());
 	}
 	
@@ -20,16 +22,16 @@ public class Heaps implements Iterable<BinaryHeap> {
 	
 	public void insert(IntPair e){
 		float score = e.z;
-		if (heapList.get(0).getSize()==0){
-			lastBucket=0;
+		if (heapList.get(1).getSize()==0){
+			lastBucket=1;
 			capLastBucket=1;
-			heapList.get(0).push(e);
-			
+			heapList.get(1).push(e);
+			eventBucket.put(e.x, 1);
 			return;
 		}
 		int i;
 		boolean notInserted = true;
-		for (i=0;i<=lastBucket;i++){
+		for (i=1;i<=lastBucket;i++){
 			if (score > heapList.get(i).getMin().z) {
 				heapList.get(i).push(e);
 				eventBucket.put(e.x, i);

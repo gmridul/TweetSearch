@@ -12,6 +12,7 @@ public class QueryProc {
 	public Stack<Integer> searchQuery(List<String> query, int topK) {
 		
 		int query_length = query.size();
+		int newTopK=topK;
 		Iterator<BinaryHeap> iterForBH;
 		Map<Integer,Float> totalEventScore = new HashMap<Integer,Float>();
 		//It stores the iterator of BinaryHeap for each word in query 
@@ -27,6 +28,7 @@ public class QueryProc {
 		float minScore=101;
 		for(String word : query) {
 			if(index.IDIndex.containsKey(word)) {
+				newTopK++;
 				iterForBH = index.IDIndex.get(word).iterator();
 				if(iterForBH.hasNext()) {
 					remainingEventsfromBuckets.add(iterForBH.next().maxHeap);
@@ -39,7 +41,7 @@ public class QueryProc {
 					//tempBH.iterator().next().y = numRemainingWords; //position in the array of iterator, same position in both arrays
 					//listOfIterOfEventsInBH.add(tempBH.iterator());
 					totalEventScore.put(peekIntPair.x, peekIntPair.getScore());
-					if(totalEventScore.containsKey(peekIntPair.x)) System.out.println("Found Stars");
+					//if(totalEventScore.containsKey(peekIntPair.x)) System.out.println("Found Stars");
 					topEvents.add(peekIntPair);
 					remainingEventsfromBuckets.get(numRemainingWords).poll();
 					//remainingEventsfromBuckets.get(numRemainingWords).push(tempBH.getMax());
@@ -56,12 +58,12 @@ public class QueryProc {
 		List<IntPair> redundantEvents = new ArrayList<IntPair>();
 		
 		while(topEvents.size()>0) {
-			System.out.print("before : ");
-			System.out.println(peekIntPair.x);
+			//System.out.print("before : ");
+			//System.out.println(peekIntPair.x);
 			peekIntPair = new IntPair();
 			peekIntPair.copy(topEvents.peek());
-			System.out.print("after : ");
-			System.out.println(peekIntPair.x);
+			//System.out.print("after : ");
+			//System.out.println(peekIntPair.x);
 			
 			if(remainingEventsfromBuckets.get(peekIntPair.y).isEmpty()) {
 				if(listOfIterBH.get(peekIntPair.y).hasNext()) {
@@ -76,10 +78,10 @@ public class QueryProc {
 				nextIntPair = new IntPair();
 				nextIntPair.copy(remainingEventsfromBuckets.get(peekIntPair.y).poll());
 				nextIntPair.y = peekIntPair.y;
-				if(remainingEventsfromBuckets.get(peekIntPair.y).isEmpty()) {System.out.println("should print");}
+				//if(remainingEventsfromBuckets.get(peekIntPair.y).isEmpty()) {System.out.println("should print");}
 				if(topEvents.contains(nextIntPair)) {
 					topEvents.remove(nextIntPair);
-					if(!totalEventScore.containsKey(nextIntPair.x)) {System.out.println("Lost Stars");}
+					//if(!totalEventScore.containsKey(nextIntPair.x)) {System.out.println("Lost Stars");}
 					nextIntPair.setScore(nextIntPair.getScore()+totalEventScore.get(nextIntPair.x));
 					totalEventScore.put(nextIntPair.x,nextIntPair.getScore());
 					topEvents.add(nextIntPair);
@@ -88,7 +90,7 @@ public class QueryProc {
 				else if((!topEvents.contains(nextIntPair)) && totalEventScore.containsKey(nextIntPair.x)) {
 					totalEventScore.put(nextIntPair.x, nextIntPair.getScore()+totalEventScore.get(nextIntPair.x));
 				}
-				else if(topEvents.size()+redundantEvents.size()<topK || peekIntPair.getScore() <= nextIntPair.getScore()*query_length) {
+				else if(topEvents.size()+redundantEvents.size()<newTopK || peekIntPair.getScore() <= nextIntPair.getScore()*query_length) {
 					topEvents.add(nextIntPair);
 					totalEventScore.put(nextIntPair.x, nextIntPair.getScore());
 					minScore = Math.min(minScore, nextIntPair.getScore());
@@ -110,8 +112,12 @@ public class QueryProc {
 		
 		
 		while(!returnEventsPQ.isEmpty() && topK>0) {
-			returnEvents.push(returnEventsPQ.poll().x);
-			topK--;
+			if(returnEventsPQ.peek().getScore()>0) {
+				returnEvents.push(returnEventsPQ.poll().x);
+				topK--;
+			}
+			else returnEventsPQ.poll();
+			
 		}
 		//Arrays.sort(topEvents.toArray(), new maxIntPairComparator());
 		
